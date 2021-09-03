@@ -14,7 +14,10 @@ import (
 var connectedClients = 0 // number of currently connected clients to the server.
 
 func handleConnection(c net.Conn) {
-	fmt.Print(".")
+	fmt.Print("new connection detected, current number of connected clients is")
+	fmt.Print(connectedClients)
+	fmt.Print("\n")
+
 	for {
 		netData, err := bufio.NewReader(c).ReadString('\n')
 		if err != nil {
@@ -22,6 +25,7 @@ func handleConnection(c net.Conn) {
 			return
 		}
 
+		// message handling.
 		temp := strings.TrimSpace(string(netData))
 		if temp == "STOP" {
 			break
