@@ -19,7 +19,7 @@
             "id":1,
             "name":"test_world",
             "owner":1,
-            "players":[2]
+            "players":[1,2]
         }
     ]
 
