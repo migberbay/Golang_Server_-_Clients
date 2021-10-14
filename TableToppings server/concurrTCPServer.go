@@ -18,66 +18,107 @@ type user_conn struct {
 
 var connections []user_conn // current connections
 
-func handleConnection(c net.Conn, config Config) {
-	fmt.Print("new connection accepted, current connected clients are:\n")
-	for _, c := range connections {
-		fmt.Print(c.connection.RemoteAddr())
-		fmt.Print("\n")
+func handleConnection(conn user_conn, config Config) {
+	current_connection := conn.connection
+	fmt.Print("new connection accepted\n")
+
+	// AUTHENTICATION PROCESS
+	authed, err := AuthenticationHandler(conn, config)
+
+	if err != nil || !authed {
+		fmt.Println(err)
+		current_connection.Write([]byte("401:Fatal error during authentication."))
+		return
 	}
 
-	authed := false
-
-	for !authed {
-		fmt.Println("awaiting login attempt")
-		netData, err := bufio.NewReader(c).ReadString('\n')
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		temp := strings.TrimSpace(string(netData))
-		fmt.Println(temp)
-		log_in_attempt := strings.Split(temp, ":")
-
-		if log_in_attempt[0] != "Login" {
-			c.Write([]byte(string("401:")))
-			return
-		}
-
-		usr_pass := strings.Split(log_in_attempt[1], ",")
-		usr := usr_pass[0]
-		pass := usr_pass[1]
-
-		for _, e := range config.Users {
-			if e.Username == usr {
-				if e.Password == pass { // peferably add some type of cyper to this.
-					c.Write([]byte(string("001:accepted;" + strconv.Itoa(e.ID) + "," + e.Type + "," + e.Username)))
-					fmt.Println("accepted login attempt")
-					authed = true
-				}
-			}
-		}
-		if !authed {
-			c.Write([]byte(string("001:rejected")))
-			fmt.Println("rejected login attempt")
-		}
-	}
-
+	// MANAGEMENT.
 	for {
-		netData, err := bufio.NewReader(c).ReadString('\n')
+		//read new petition from client
+		netData, err := bufio.NewReader(current_connection).ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
 
 		// message handling.
-		temp := strings.TrimSpace(string(netData))
-		if temp == "STOP" {
+		msg := strings.TrimSpace(string(netData))
+		if msg == "STOP" {
 			break
 		}
 
-		fmt.Println(temp)
-		c.Write([]byte("401:error"))
+		fmt.Println("Message recieved from server it is:" + msg)
+		// fmt.Println(temp)
+
+		current_connection.Write([]byte("401:unknown error"))
 	}
+}
+
+func AuthenticationHandler(conn user_conn, config Config) (bool, error) {
+	current_connection := conn.connection
+
+	authed := false
+	for !authed {
+		fmt.Println("awaiting login attempt for connection:")
+		fmt.Println(current_connection.RemoteAddr())
+
+		cont := true
+
+		netData, err := bufio.NewReader(current_connection).ReadString('\n')
+		if err != nil {
+			fmt.Println(err)
+			current_connection.Write([]byte(string("400: Server reading error.\n")))
+			cont = false
+		}
+
+		temp := strings.TrimSpace(string(netData))
+		fmt.Println(temp)
+		log_in_attempt := strings.Split(temp, ":")
+
+		if log_in_attempt[0] != "Login" {
+			current_connection.Write([]byte(string("400: Invalid login attempt.\n")))
+			cont = false
+		}
+
+		if cont {
+			usr_pass := strings.Split(log_in_attempt[1], ",")
+			usr := usr_pass[0]
+			pass := usr_pass[1]
+
+			for _, e := range config.Users {
+				if e.Username == usr {
+					if e.Password == pass { // peferably add some type of cyper to this.
+
+						if addressIsConnected(current_connection.RemoteAddr().String()) {
+							current_connection.Write([]byte(string("400: User is already connected, something went wrong.")))
+							break
+						}
+
+						current_connection.Write([]byte(string("001:accepted;" + strconv.Itoa(e.ID) + "," + e.Type + "," + e.Username)))
+						authed = true
+
+						fmt.Print("Authentication accepted, current connections are:")
+						for _, c := range connections {
+							if c.connection.RemoteAddr() == conn.connection.RemoteAddr() {
+								c.user.ID = e.ID
+								c.user.Username = e.Username
+								c.user.Type = e.Type
+							}
+
+							fmt.Printf("%s - %s (%s)", c.connection.RemoteAddr(), c.user.Username, c.user.Type)
+							fmt.Print("\n")
+						}
+					}
+					break
+				}
+			}
+
+			if !authed {
+				current_connection.Write([]byte(string("001:rejected")))
+				fmt.Println("rejected login attempt")
+			}
+		}
+	}
+	return authed, nil
 }
 
 func addressIsConnected(address string) bool {
@@ -126,6 +167,6 @@ func main() {
 		conn.connection = c
 
 		connections = append(connections, conn)
-		go handleConnection(c, config)
+		go handleConnection(conn, config)
 	}
 }
