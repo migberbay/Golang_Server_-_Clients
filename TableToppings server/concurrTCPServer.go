@@ -92,9 +92,9 @@ func addressIsConnected(address string) bool {
 func main() {
 	//Load configuration.
 	config := LoadConfig()
-	fmt.Println(config)
-	// fmt.Println(config.Users)
-	// fmt.Println(config.Worlds)
+	// fmt.Println(config)
+	fmt.Println(config.Users)
+	fmt.Println(config.Worlds)
 
 	PORT := ":" + config.Port
 	l, err := net.Listen("tcp4", PORT)
