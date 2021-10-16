@@ -150,6 +150,7 @@ func main() {
 	defer l.Close()
 
 	for { // for with nothing else attached acts like a while(true)
+		fmt.Println("ready for next connection")
 		c, err := l.Accept()
 		if err != nil {
 			fmt.Println(err)
