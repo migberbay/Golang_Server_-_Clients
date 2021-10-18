@@ -160,6 +160,12 @@ func forwardConfigPort(config Config) {
 	}
 }
 
+func onClose(listener net.Listener) {
+	listener.Close()
+	println("Server has stopped due to lack of connected clients, relaunching...")
+	main()
+}
+
 func main() {
 	//Load configuration.
 	config := LoadConfig()
@@ -167,6 +173,9 @@ func main() {
 	fmt.Println("Worlds: ", config.Worlds)
 
 	PORT := ":" + config.Port
+
+	// Open the port in the config file via UPnP
+	forwardConfigPort(config)
 
 	listener, err := net.Listen("tcp4", PORT)
 	if err != nil {
@@ -176,8 +185,8 @@ func main() {
 		fmt.Println("Server is up and running in port ", config.Port, ", ready for master connection.")
 	}
 
-	// defer makes it so the server closes if the main function is exited.
-	defer listener.Close()
+	// defer Executes the function id we exit the current one (when no more clients exist on the file.)
+	defer onClose(listener)
 
 	for { // for with nothing else attached acts like a while(true)
 		c, err := listener.Accept()
