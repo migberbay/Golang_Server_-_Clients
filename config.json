@@ -20,6 +20,24 @@
             "name":"test_world",
             "owner":1,
             "players":[1,2]
+        },
+        {
+            "id":2,
+            "name":"test_world_2",
+            "owner":1,
+            "players":[1,2]
+        }
+    ],
+    "scenes":[
+        {
+            "id":1,
+            "name":"test_scene",
+            "world":1
+        },
+        {
+            "id":1,
+            "name":"test_scene",
+            "world":2
         }
     ]
 

@@ -22,6 +22,7 @@ type user_conn struct {
 var connections []user_conn // current connections
 var external_ip string
 var config Config
+var activeWorld World
 
 // Main Function for handling connections, meant to be paralelized for 1 thread per connection.
 func handleConnection(conn user_conn) {
@@ -49,18 +50,18 @@ func handleConnection(conn user_conn) {
 
 		// message handling.
 		msg := strings.TrimSpace(string(netData))
-		logger_message(current_connection, "Message recieved from server => "+msg)
+		logger_message(current_connection, "Message recieved from client => "+msg)
 		stopConnFlag := messageHandler(msg, current_connection)
 
 		if stopConnFlag {
-			current_connection.Write([]byte("002")) // Send logout back to client.
+			current_connection.Write([]byte("002:Logout processed")) // Send logout back to client.
 			break
 		}
 	}
 }
 
 func messageHandler(msg string, conn net.Conn) bool {
-	info := strings.Split(msg, ":")
+	info := strings.SplitN(msg, ":", 2)
 	main_code := info[0]
 
 	if info[0] == "Logout" { // special logout case
@@ -93,6 +94,13 @@ func messageHandler(msg string, conn net.Conn) bool {
 	case '2':
 
 		break
+	case '3':
+
+		break
+
+	case '4':
+
+		break
 	default:
 		m := "Code not understood, message was: " + msg
 		logger_message(conn, m)
@@ -113,7 +121,7 @@ func AuthenticationHandler(conn user_conn) (bool, error) {
 		netData, err := bufio.NewReader(current_connection).ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
-			current_connection.Write([]byte(string("400: Server reading error.\n")))
+			current_connection.Write([]byte("400: Server reading error.\n"))
 			cont = false
 		}
 
@@ -125,7 +133,7 @@ func AuthenticationHandler(conn user_conn) (bool, error) {
 		logger_message(current_connection, msg)
 
 		if log_in_attempt[0] != "Login" {
-			current_connection.Write([]byte(string("400: Invalid login attempt.\n")))
+			current_connection.Write([]byte("400: Invalid login attempt.\n"))
 			cont = false
 		}
 
@@ -159,7 +167,7 @@ func AuthenticationHandler(conn user_conn) (bool, error) {
 			}
 
 			if !authed {
-				current_connection.Write([]byte(string("001:rejected")))
+				current_connection.Write([]byte("001:rejected"))
 				fmt.Println("rejected login attempt")
 			}
 		}
@@ -173,6 +181,7 @@ func main() {
 	config = LoadConfig()
 	fmt.Println("Users: ", config.Users)
 	fmt.Println("Worlds: ", config.Worlds)
+	fmt.Println("Scenes: ", config.Scenes)
 
 	PORT := ":" + config.Port
 
@@ -214,11 +223,13 @@ func main() {
 	}
 }
 
-// SUBCODE HANDLERS
+// SUBCODE HANDLERS (0)
 func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 	switch subcode {
 	case "03": // Client asking for worlds belonging to user id
 		user_id, _ := strconv.Atoi(info)
+		msg := "Sending world info for user with id: " + info
+		logger_message(conn, msg)
 		toSend := ""
 		for _, w := range config.Worlds {
 			if w.Owner == user_id {
@@ -227,6 +238,32 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 			}
 		}
 		conn.Write([]byte("003:" + toSend))
+
+	case "04": //Client asing for world to be loaded.
+		world_to_load_id, _ := strconv.Atoi(info)
+		for _, w := range config.Worlds {
+			if w.ID == world_to_load_id {
+				activeWorld = w
+				msg := activeWorld.Name + " has been activated."
+				logger_message(conn, msg)
+				break
+			}
+		}
+
+		json_world, _ := json.Marshal(activeWorld)
+		toSend := string(json_world)
+
+		sceneString := ""
+		for _, s := range config.Scenes {
+			if s.world == activeWorld.ID {
+				to_add, _ := json.Marshal(s)
+				sceneString += string(to_add)
+			}
+		}
+		toSend += sceneString
+
+		msg := "004:" + toSend
+		conn.Write([]byte(msg))
 
 	default:
 		m := "Subcode not handled message was: 0" + subcode + ":" + info

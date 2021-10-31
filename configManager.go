@@ -15,6 +15,7 @@ type Config struct {
 	Port   string  `json:"port"`
 	Users  []User  `json:"users"`
 	Worlds []World `json:"worlds"`
+	Scenes []Scene `json:"scenes"`
 }
 
 type User struct {
@@ -29,6 +30,12 @@ type World struct {
 	Name    string `json:"name"`
 	Owner   int    `json:"owner"`
 	Players []int  `json:"players"`
+}
+
+type Scene struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	world int    `json:"world"`
 }
 
 // Writes file
