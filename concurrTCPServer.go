@@ -297,13 +297,13 @@ func addressIsConnected(address string) bool {
 func forwardConfigPort() {
 	device, err := upnp.InitDevice()
 	if err != nil {
-		fmt.Println("Couldn't initialize device for port forwarding.")
+		fmt.Println("Couldn't initialize device for port forwarding.", err)
 		os.Exit(0)
 	}
 
 	public_ip, err := device.PublicIP()
 	if err != nil {
-		fmt.Println("Couldn't retrieve your public IP.")
+		fmt.Println("Couldn't retrieve your public IP.", err)
 	} else {
 		fmt.Println("")
 	}
