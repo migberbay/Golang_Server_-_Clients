@@ -5,11 +5,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
+	"os"
 	"strconv"
 	"strings"
 	"time"
 
-	"gitlab.com/NebulousLabs/go-upnp"
+	upnp "github.com/DeNetPRO/turbo-upnp"
 	// "crypto/sha1"
 	// "encoding/base64"
 )
@@ -294,27 +295,26 @@ func addressIsConnected(address string) bool {
 
 // Forwards the port given by the config file if UPnP is enabled in the router.
 func forwardConfigPort() {
-	d, err := upnp.Discover()
+	device, err := upnp.InitDevice()
 	if err != nil {
-		fmt.Println("Discovering router failed, network failure?")
+		fmt.Println("Couldn't initialize device for port forwarding.")
+		os.Exit(0)
 	}
 
-	external_ip, err = d.ExternalIP()
+	public_ip, err := device.PublicIP()
 	if err != nil {
-		fmt.Println("Extracting external ID failed, is UPnP allowed by your router?")
+		fmt.Println("Couldn't retrieve your public IP.")
 	} else {
-		fmt.Println("External IP is ", external_ip)
+		fmt.Println("")
 	}
 
-	port_i64, err := strconv.ParseUint(config.Port, 10, 16)
-	port_i16 := uint16(port_i64)
+	fmt.Println("Device public ip is: ", public_ip)
 
-	//Example of port forwarding, this probably neesd to be moved to someplace else.
-	err = d.Forward(port_i16, "TableToppings Server")
+	port, err := strconv.Atoi(config.Port)
 	if err != nil {
-		fmt.Println("Error Forwarding port")
+		fmt.Println("Error parsing port from configuration file.")
 	} else {
-		fmt.Println("Forwarded port ", port_i16, " ready for external connections.")
+		device.Forward(port, "dndserver")
 	}
 }
 
