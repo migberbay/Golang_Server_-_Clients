@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	upnp "github.com/DeNetPRO/turbo-upnp"
+	upnp "github.com/jcuga/go-upnp"
 	// "crypto/sha1"
 	// "encoding/base64"
 )
@@ -295,26 +295,33 @@ func addressIsConnected(address string) bool {
 
 // Forwards the port given by the config file if UPnP is enabled in the router.
 func forwardConfigPort() {
-	device, err := upnp.InitDevice()
+
+	d, err := upnp.Discover()
 	if err != nil {
-		fmt.Println("Couldn't initialize device for port forwarding.", err)
-		os.Exit(0)
+		fmt.Println("Failed discovery; ", err)
+		os.Exit(1)
 	}
 
-	public_ip, err := device.PublicIP()
+	// discover external IP
+	ip, err := d.ExternalIP()
 	if err != nil {
-		fmt.Println("Couldn't retrieve your public IP.", err)
-	} else {
-		fmt.Println("")
+		fmt.Println("Error fetching external IP address; ", err)
+		os.Exit(1)
 	}
-
-	fmt.Println("Device public ip is: ", public_ip)
+	fmt.Println("Your external IP is:", ip)
 
 	port, err := strconv.Atoi(config.Port)
 	if err != nil {
-		fmt.Println("Error parsing port from configuration file.")
-	} else {
-		device.Forward(port, "dndserver")
+		fmt.Printf("Error converting port from config file: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("Opening port forward for TCP port ", port)
+	errT := d.Forward(uint16(port), "dndserver", "TCP")
+	// errU := d.Forward(uint16(port), "dndserver", "UDP")
+	if errT != nil { //|| errU != nil
+		fmt.Println("Error opening port forward: ", errT) //errU
+		os.Exit(1)
 	}
 }
 
