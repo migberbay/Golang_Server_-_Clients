@@ -1,3 +1,17 @@
 {
-    "grozera":"beba"
+    "linked_items_instances":[
+        {
+            "id":1,
+            "position":[0,0,0],
+            "rotation":[0,0,0]
+        }
+    ],
+    "actors":[
+        {
+            "id":1,
+            "postion":[0,0,0],
+            "rotation":[0,0,0]
+        }
+    ]
+
 }

@@ -1,0 +1,12 @@
+{
+    "actor_models":[
+        {
+            "id":1,
+            "name":"asset_1",
+            "path":"models/actors/asset_1"
+        }
+    ],
+    "synced_objects":[
+        
+    ]
+}
