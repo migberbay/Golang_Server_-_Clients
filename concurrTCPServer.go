@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -187,7 +186,10 @@ func main() {
 	PORT := ":" + config.Port
 
 	// Open the port in the config file via UPnP
-	forwardConfigPort()
+	err := forwardConfigPort()
+	if err != nil {
+		fmt.Println("Couldn't open a port in your router, make sure UPnP protocol is enabled. Proceeding in local only mode.")
+	}
 
 	listener, err := net.Listen("tcp4", PORT)
 	if err != nil {
@@ -294,26 +296,26 @@ func addressIsConnected(address string) bool {
 }
 
 // Forwards the port given by the config file if UPnP is enabled in the router.
-func forwardConfigPort() {
+func forwardConfigPort() error {
 
 	d, err := upnp.Discover()
 	if err != nil {
 		fmt.Println("Failed discovery; ", err)
-		os.Exit(1)
+		return err
 	}
 
 	// discover external IP
 	ip, err := d.ExternalIP()
 	if err != nil {
 		fmt.Println("Error fetching external IP address; ", err)
-		os.Exit(1)
+		return err
 	}
 	fmt.Println("Your external IP is:", ip)
 
 	port, err := strconv.Atoi(config.Port)
 	if err != nil {
 		fmt.Printf("Error converting port from config file: %v\n", err)
-		os.Exit(1)
+		return err
 	}
 
 	fmt.Println("Opening port forward for TCP port ", port)
@@ -321,8 +323,10 @@ func forwardConfigPort() {
 	// errU := d.Forward(uint16(port), "dndserver", "UDP")
 	if errT != nil { //|| errU != nil
 		fmt.Println("Error opening port forward: ", errT) //errU
-		os.Exit(1)
+		return err
 	}
+
+	return nil
 }
 
 // Shows all connections in on the server currently

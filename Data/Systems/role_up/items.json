@@ -1,0 +1,96 @@
+{
+    "light weapons":[
+        {
+            "name":"dagger",
+            "usage":["melee","thrown"],
+            "damage":{"physical":"1d6", "crit":"8"},
+            "extra":"Aumenta +1 el daño cuando ataca con ventaja."
+        },
+        {
+            "name":"rapier",
+            "usage":["melee"],
+            "damage":{"physical":"1d6", "crit":"8"},
+            "extra":"Si obtiene 6 en la tirada de daño, se convertirá en 12."
+        }
+    ],
+    "medium weapons":[
+        {
+            "name":"spear",
+            "usage":["melee","thrown","reach"],
+            "damage":{"physical":"1d8", "crit":"8"},
+            "extra":"Pelear con dos lanzas al mismo tiempo no tendrá ningún beneficio extra, pero usarla con ambas manos, hará que se considere “arma dual”."
+        },
+        {
+            "name":"axe",
+            "usage":["melee", "thrown"],
+            "damage":{"physical":"1d6", "crit":"8"},
+            "extra":"Aumenta +1 el daño contra objetivos que tengan 0 RD (después de aplicar las reducciones de RD) y no sean rígidos (esqueletos, criaturas de piedra, etc)."
+        },
+        {
+            "name":"hammer",
+            "usage":["melee"],
+            "damage":{"physical":"1d8", "crit":"8"},
+            "extra":"Aumenta +2 el daño e ignora la RD contra objetivos con armadura pesada o con cuerpos rígidos (esqueletos, criaturas de piedra, etc). "
+        },
+        {
+            "name":"sword",
+            "usage":["melee"],
+            "damage":{"physical":"1d10", "crit":"8"},
+            "extra":""
+        },
+        {
+            "name":"shield",
+            "usage":["melee"],
+            "damage":{"physical":"1d3", "crit":"6"},
+            "extra":"+1 EVA, Requiere FZA 4 para poder beneficiarse de su efecto. Nunca aplica el efecto de “arma dual”."
+        }
+    ],
+    "heavy weapons":[
+        {
+            "name":"two-handed axe",
+            "usage":["melee"],
+            "damage":{"physical":"1d12", "crit":"10"},
+            "extra":"Si obtiene 12 en la tirada de daño, se convertirá en 18. Aumenta +2 el daño contra objetivos que no sean rígidos y que tengan 0 RD (después de aplicar las reducciones de RD)."
+        },
+        {
+            "name":"warhammer",
+            "usage":["melee"],
+            "damage":{"physical":"1d12", "crit":"10"},
+            "extra":"Ignora la EVA del objetivo. Además, contra objetivos con armadura pesada o con cuerpos rígidos (esqueletos, criaturas de piedra...), aumenta +4 el daño e ignora su RD. "
+        },
+        {
+            "name":"greatsword",
+            "usage":["melee"],
+            "damage":{"physical":"1d12", "crit":"10"},
+            "extra":"Ignora la EVA del objetivo. Además, contra objetivos con armadura pesada o con cuerpos rígidos (esqueletos, criaturas de piedra...), aumenta +4 el daño e ignora su RD. "
+        }
+    ],
+    "projectile weapons":[
+        {
+            "name":"bow",
+            "usage":["30m"],
+            "damage":{"physical":"1d6", "crit":"8"},
+            "extra":"Se considera un “arma dual”."
+        },
+        {
+            "name":"ballista",
+            "usage":["30m"],
+            "damage":{"physical":"1d8", "crit":"8"},
+            "extra":""
+        }
+    ],
+    "armor":[
+        {
+            "name":"light armor",
+            "effect":"+1 RD",
+            "extra":"Requiere FZA 4 para poder ser usada."
+        },
+        {
+            "name":"heavy armor",
+            "effect":"+2 RD",
+            "extra":"Requiere FZA 7 para poder ser usada. Aplica desventaja al moverse y en cualquier tirada o duelo de AGL y VEL. Hace ruido al moverse."
+        }
+    ],
+    "custom":[
+    ]
+}
