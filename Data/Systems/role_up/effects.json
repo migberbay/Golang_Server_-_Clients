@@ -1,0 +1,14 @@
+{
+    "effects":[
+        {
+            "id":1,
+            "name":"Buen corazón",
+            "effect":"actor.stats.cha + 4"
+        },
+        {
+            "id":2,
+            "name":"Veterano de guerra",
+            "effect":"actor.stats.ps + 2"
+        },
+    ]
+}

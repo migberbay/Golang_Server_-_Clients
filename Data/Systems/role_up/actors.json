@@ -1,9 +1,10 @@
 {
     "monsters":[
         {
+            "id":1,
             "name":"Dragón",
             "size":"6x6m",
-            "movement":"fly:10, walk:10",
+            "movement":{"fly":10, "walk":10},
             "legend_level":3,
             "reach":2,
             "extra":"Criatura inteligente. Escamas: +3 RD, reduce a la mitad todo el daño elemental, es inmune al fuego.",
@@ -73,9 +74,10 @@
             "items":[]
         },
         {
+            "id":2,
             "name":"Hidra",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":3,
             "reach":1,
             "extra":"",
@@ -145,9 +147,10 @@
             "items":[]
         },
         {
+            "id":3,
             "name":"Contemplador",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":3,
             "reach":1,
             "extra":"",
@@ -217,9 +220,10 @@
             "items":[]
         },
         {
+            "id":4,
             "name":"Liche",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":3,
             "reach":1,
             "extra":"",
@@ -289,9 +293,10 @@
             "items":[]
         },
         {
+            "id":5,
             "name":"Mayliss",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":3,
             "reach":1,
             "extra":"",
@@ -361,9 +366,10 @@
             "items":[]
         },
         {
+            "id":6,
             "name":"Nio'hen",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":3,
             "reach":1,
             "extra":"",
@@ -433,9 +439,10 @@
             "items":[]
         },
         {
+            "id":7,
             "name":"Wyverno",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":2,
             "reach":1,
             "extra":"",
@@ -505,9 +512,10 @@
             "items":[]
         },
         {
+            "id":8,
             "name":"Mólbol",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":2,
             "reach":1,
             "extra":"",
@@ -577,9 +585,10 @@
             "items":[]
         },
         {
+            "id":9,
             "name":"Mono gigante",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":2,
             "reach":1,
             "extra":"",
@@ -649,9 +658,10 @@
             "items":[]
         },
         {
+            "id":10,
             "name":"Araña grande",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":2,
             "reach":1,
             "extra":"",
@@ -721,9 +731,10 @@
             "items":[]
         },
         {
+            "id":11,
             "name":"Esfinge",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":2,
             "reach":1,
             "extra":"",
@@ -793,9 +804,10 @@
             "items":[]
         },
         {
+            "id":12,
             "name":"Gólem",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":2,
             "reach":1,
             "extra":"",
@@ -865,9 +877,10 @@
             "items":[]
         },
         {
+            "id":13,
             "name":"Krotus",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":2,
             "reach":1,
             "extra":"",
@@ -939,7 +952,7 @@
         {
             "name":"Serpiente alada",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":2,
             "reach":1,
             "extra":"",
@@ -1009,9 +1022,10 @@
             "items":[]
         },
         {
+            "id":14,
             "name":"Minotauro",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":1,
             "reach":1,
             "extra":"",
@@ -1081,9 +1095,10 @@
             "items":[]
         },
         {
+            "id":15,
             "name":"Trol",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":1,
             "reach":1,
             "extra":"",
@@ -1153,9 +1168,10 @@
             "items":[]
         },
         {
+            "id":16,
             "name":"Kagune",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":1,
             "reach":1,
             "extra":"",
@@ -1225,9 +1241,10 @@
             "items":[]
         },
         {
+            "id":17,
             "name":"Gárgola",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":1,
             "reach":1,
             "extra":"",
@@ -1297,9 +1314,10 @@
             "items":[]
         },
         {
+            "id":18,
             "name":"Hombre lobo",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":1,
             "reach":1,
             "extra":"",
@@ -1369,9 +1387,10 @@
             "items":[]
         },
         {
+            "id":19,
             "name":"Quimera",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":1,
             "reach":1,
             "extra":"",
@@ -1441,9 +1460,10 @@
             "items":[]
         },
         {
+            "id":20,
             "name":"Azotamentes",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":0,
             "reach":1,
             "extra":"",
@@ -1513,9 +1533,10 @@
             "items":[]
         },
         {
+            "id":21,
             "name":"Araña mediana",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":0,
             "reach":1,
             "extra":"",
@@ -1585,9 +1606,10 @@
             "items":[]
         },
         {
+            "id":22,
             "name":"Araña pequeña",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":0,
             "reach":1,
             "extra":"",
@@ -1657,9 +1679,10 @@
             "items":[]
         },
         {
+            "id":23,
             "name":"Chupasangre",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":0,
             "reach":1,
             "extra":"",
@@ -1729,9 +1752,10 @@
             "items":[]
         },
         {
+            "id":24,
             "name":"Hada",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":0,
             "reach":1,
             "extra":"",
@@ -1801,9 +1825,10 @@
             "items":[]
         },
         {
+            "id":25,
             "name":"Geócrano",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":0,
             "reach":1,
             "extra":"",
@@ -1873,9 +1898,10 @@
             "items":[]
         },
         {
+            "id":26,
             "name":"Eleméncuro",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":0,
             "reach":1,
             "extra":"",
@@ -1945,9 +1971,10 @@
             "items":[]
         },
         {
+            "id":27,
             "name":"Lobo",
             "size":"medium",
-            "movement":"walk:5",
+            "movement":{"walk":5},
             "legend_level":0,
             "reach":1,
             "extra":"",
@@ -2019,6 +2046,7 @@
     ],
     "classes":[
         {
+            "id":28,
             "name":"Berserker",
             "description":"",
             "strengths":"",
@@ -2082,9 +2110,10 @@
                     "ammount":2
                 }
             ],
-            "abilities":[]
+            "abilities":[1,2]
         },
         {
+            "id":29,
             "name":"Soldado",
             "description":"",
             "strengths":"",
@@ -2148,9 +2177,10 @@
                     "ammount":2
                 }
             ],
-            "abilities":[]
+            "abilities":[1,2]
         },
         {
+            "id":30,
             "name":"Guardián",
             "description":"",
             "strengths":"",
@@ -2214,9 +2244,10 @@
                     "ammount":2
                 }
             ],
-            "abilities":[]
+            "abilities":[1,2]
         },
         {
+            "id":31,
             "name":"Héroe",
             "description":"",
             "strengths":"",
@@ -2280,9 +2311,10 @@
                     "ammount":5
                 }
             ],
-            "abilities":[]
+            "abilities":[1,2]
         },
         {
+            "id":32,
             "name":"Discípulo",
             "description":"",
             "strengths":"",
@@ -2349,6 +2381,7 @@
             "abilities":[]
         },
         {
+            "id":33,
             "name":"Veterano",
             "description":"",
             "strengths":"",
@@ -2415,6 +2448,7 @@
             "abilities":[]
         },
         {
+            "id":34,
             "name":"Monje",
             "description":"",
             "strengths":"",
@@ -2481,6 +2515,7 @@
             "abilities":[]
         },
         {
+            "id":35,
             "name":"Espadachín",
             "description":"",
             "strengths":"",
@@ -2547,6 +2582,7 @@
             "abilities":[]
         },
         {
+            "id":36,
             "name":"Bailarín",
             "description":"",
             "strengths":"",
@@ -2613,6 +2649,7 @@
             "abilities":[]
         },
         {
+            "id":37,
             "name":"Cazarrecompensas",
             "description":"",
             "strengths":"",
@@ -2679,6 +2716,7 @@
             "abilities":[]
         },
         {
+            "id":38,
             "name":"Truhán",
             "description":"",
             "strengths":"",
@@ -2745,6 +2783,7 @@
             "abilities":[]
         },
         {
+            "id":39,
             "name":"Pirata",
             "description":"",
             "strengths":"",
@@ -2811,6 +2850,7 @@
             "abilities":[]
         },
         {
+            "id":40,
             "name":"Ladrón",
             "description":"",
             "strengths":"",
@@ -2877,6 +2917,7 @@
             "abilities":[]
         },
         {
+            "id":41,
             "name":"Artista",
             "description":"",
             "strengths":"",
@@ -2943,6 +2984,7 @@
             "abilities":[]
         },
         {
+            "id":42,
             "name":"Ejecutor",
             "description":"",
             "strengths":"",
@@ -3009,6 +3051,7 @@
             "abilities":[]
         },
         {
+            "id":43,
             "name":"Sicario",
             "description":"",
             "strengths":"",
@@ -3075,6 +3118,7 @@
             "abilities":[]
         },
         {
+            "id":44,
             "name":"Tirador",
             "description":"",
             "strengths":"",
@@ -3141,6 +3185,7 @@
             "abilities":[]
         },
         {
+            "id":45,
             "name":"Furtivo",
             "description":"",
             "strengths":"",
@@ -3207,6 +3252,7 @@
             "abilities":[]
         },
         {
+            "id":46,
             "name":"Explorador",
             "description":"",
             "strengths":"",
@@ -3273,6 +3319,7 @@
             "abilities":[]
         },
         {
+            "id":47,
             "name":"Paladín",
             "description":"",
             "strengths":"",
@@ -3339,6 +3386,7 @@
             "abilities":[]
         },
         {
+            "id":48,
             "name":"Sacerdote",
             "description":"",
             "strengths":"",
@@ -3405,6 +3453,7 @@
             "abilities":[]
         },
         {
+            "id":49,
             "name":"Feral",
             "description":"",
             "strengths":"",
@@ -3471,6 +3520,7 @@
             "abilities":[]
         },
         {
+            "id":50,
             "name":"Ancestro",
             "description":"",
             "strengths":"",
@@ -3537,6 +3587,7 @@
             "abilities":[]
         },
         {
+            "id":51,
             "name":"Errante",
             "description":"",
             "strengths":"",
@@ -3603,6 +3654,7 @@
             "abilities":[]
         },
         {
+            "id":52,
             "name":"Archimago",
             "description":"",
             "strengths":"",
@@ -3669,6 +3721,7 @@
             "abilities":[]
         },
         {
+            "id":53,
             "name":"Sabio",
             "description":"",
             "strengths":"",
@@ -3735,6 +3788,7 @@
             "abilities":[]
         },
         {
+            "id":54,
             "name":"Arcanista",
             "description":"",
             "strengths":"",
@@ -3801,6 +3855,7 @@
             "abilities":[]
         },
         {
+            "id":55,
             "name":"Ilusionista",
             "description":"",
             "strengths":"",
@@ -3867,6 +3922,7 @@
             "abilities":[]
         },
         {
+            "id":56,
             "name":"Médium",
             "description":"",
             "strengths":"",
@@ -3933,6 +3989,7 @@
             "abilities":[]
         },
         {
+            "id":57,
             "name":"Oráculo",
             "description":"",
             "strengths":"",
@@ -3999,6 +4056,7 @@
             "abilities":[]
         },
         {
+            "id":58,
             "name":"Brujo",
             "description":"",
             "strengths":"",
@@ -4065,6 +4123,7 @@
             "abilities":[]
         },
         {
+            "id":59,
             "name":"Nigromante",
             "description":"",
             "strengths":"",
@@ -4131,6 +4190,7 @@
             "abilities":[]
         },
         {
+            "id":60,
             "name":"Torturador",
             "description":"",
             "strengths":"",
@@ -4197,6 +4257,7 @@
             "abilities":[]
         },
         {
+            "id":61,
             "name":"Invocador",
             "description":"",
             "strengths":"",
@@ -4263,6 +4324,7 @@
             "abilities":[]
         },
         {
+            "id":62,
             "name":"Bestia espiritual",
             "description":"",
             "strengths":"",
@@ -4329,6 +4391,7 @@
             "abilities":[]
         },
         {
+            "id":63,
             "name":"Bailarina lunar",
             "description":"",
             "strengths":"",
@@ -4395,6 +4458,7 @@
             "abilities":[]
         },
         {
+            "id":64,
             "name":"Vigía eterno",
             "description":"",
             "strengths":"",
@@ -4461,6 +4525,7 @@
             "abilities":[]
         },
         {
+            "id":65,
             "name":"Ancestro primigenio",
             "description":"",
             "strengths":"",
@@ -4527,6 +4592,7 @@
             "abilities":[]
         },
         {
+            "id":66,
             "name":"Caótico",
             "description":"",
             "strengths":"",
@@ -4593,6 +4659,7 @@
             "abilities":[]
         },
         {
+            "id":67,
             "name":"Devorador",
             "description":"",
             "strengths":"",
@@ -4659,6 +4726,7 @@
             "abilities":[]
         },
         {
+            "id":68,
             "name":"Transmutador",
             "description":"",
             "strengths":"",
@@ -4725,6 +4793,7 @@
             "abilities":[]
         },
         {
+            "id":69,
             "name":"Metamorfo",
             "description":"",
             "strengths":"",
@@ -4791,6 +4860,7 @@
             "abilities":[]
         },
         {
+            "id":70,
             "name":"Diplomático",
             "description":"",
             "strengths":"",
@@ -4857,6 +4927,7 @@
             "abilities":[]
         },
         {
+            "id":71,
             "name":"Aprendiz",
             "description":"",
             "strengths":"",

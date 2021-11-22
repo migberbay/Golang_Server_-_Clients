@@ -2,13 +2,27 @@
     "actions":[
         {
             "id":1,
-            "name":"asset_1",
-            "path":"models/actors/asset_1"
+            "name":"Buen Corazón",
+            "description":"Aumenta +4 su CAR.",
+            "type":"passive",
+            "active":"always",
+            "effects":[1]
         },
         {
             "id":2,
-            "name":"asset_2",
-            "path":"models/actors/asset_2"
-        }
+            "name":"Fuerza Bruta",
+            "description":"Tiene ventaja en las tiradas de FZA. Además, permite cargar con mucho más peso",
+            "type":"passive",
+            "active":"always",
+            "effects":[]
+        },
+        {
+            "id":3,
+            "name":"Veterano de guerra",
+            "description":"Aumenta +2 sus PS máximos. Además, sus heridas cicatrizan con mayor facilidad, por lo que tras 1 hora de haber sufrido daño, regenerará PS hasta la mitad de sus PS máximos.",
+            "type":"passive",
+            "active":"always",
+            "effects":[2]
+        },
     ]
 }
