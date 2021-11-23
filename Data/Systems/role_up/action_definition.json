@@ -1,0 +1,8 @@
+{
+    "id":"int",
+    "name":"string",
+    "description":"string",
+    "type":"string",
+    "active":"string",
+    "ref:effects":"list<int>"
+}

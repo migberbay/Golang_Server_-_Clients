@@ -10,5 +10,8 @@
             "name":"Veterano de guerra",
             "effect":"actor.stats.ps + 2"
         },
+    ],
+    "custom":[
+        
     ]
 }

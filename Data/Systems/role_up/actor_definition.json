@@ -1,0 +1,21 @@
+{
+    "id":"int",
+    "ref:owner":"list<int>",
+    "name":"string",
+    "main_class":"string",
+    "sub_class":"string",
+    "sub_class_strengths":"string",
+    "sub_class_weakeness":"string",
+    "sub_class_description":"string",
+    "age":"int",
+    "movement":{"name":"string","ammount":"int"},
+    "movements":"list<movement>",
+    "legend_level":"int",
+    "reach":"int",
+    "ref:actions":"list<int>",
+    "ref:effects":"list<int>",
+    "ref:items":"list<int>",
+    "stat":{"name":"string","ammount":"int"},
+    "stats":"list<stat>",
+    "extra":"string"
+}
