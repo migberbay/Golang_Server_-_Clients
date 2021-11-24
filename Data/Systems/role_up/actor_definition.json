@@ -10,6 +10,8 @@
     "age":"int",
     "movement":{"name":"string","ammount":"int"},
     "movements":"list<movement>",
+    "max_health":"int",
+    "current_health":"int",
     "legend_level":"int",
     "reach":"int",
     "ref:actions":"list<int>",

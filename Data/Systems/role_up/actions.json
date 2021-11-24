@@ -24,5 +24,21 @@
             "active":"always",
             "effects":[2]
         },
+        {
+            "id":4,
+            "name":"Nacido para el combate",
+            "description":"Puede hacer dos tiradas en los duelos de Iniciativa y elegir una",
+            "type":"passive",
+            "active":"always",
+            "effects":[]
+        },
+        {
+            "id":4,
+            "name":"Nacido para el combate",
+            "description":"Puede hacer dos tiradas en los duelos de Iniciativa y elegir una",
+            "type":"passive",
+            "active":"always",
+            "effects":[]
+        },
     ]
 }
