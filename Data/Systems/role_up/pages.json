@@ -1,11 +1,7 @@
 {
     "player":{
-        "default_px_width":600,
-        "default_px_height":900,
-        "document_source_HTML":
-    },
-    "monster":{
-        
-
+        "default_px_width":700,
+        "default_px_height":800,
+        "document_source_HTML":""
     }
 }

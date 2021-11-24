@@ -1,7 +1,9 @@
 {
     "id":"int",
-    "ref:owner":"list<int>",
+    "ref:owners":"list<int>",
     "name":"string",
+    "level":"int",
+    "picture":"string",
     "main_class":"string",
     "sub_class":"string",
     "sub_class_strengths":"string",
