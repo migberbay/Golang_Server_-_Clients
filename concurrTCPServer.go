@@ -14,6 +14,9 @@ import (
 	// "encoding/base64"
 )
 
+// TODO: READ THIS!
+// https://johnpili.com/how-to-parse-json-data-without-struct-in-golang/
+
 type user_conn struct {
 	connection net.Conn
 	user       User

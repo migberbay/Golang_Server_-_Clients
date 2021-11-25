@@ -10,6 +10,11 @@
             "name":"Veterano de guerra",
             "effect":"actor.stats.ps + 2"
         },
+        {
+            "id":3,
+            "name":"Veterano de guerra",
+            "effect":"actor.stats.pun + 2"
+        },
     ],
     "custom":[
         

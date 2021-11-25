@@ -3,6 +3,14 @@
     "name":"string",
     "description":"string",
     "type":"string",
-    "active":"string",
+    "duration":"string",
+    "action":"string",
+    "total_uses":"int",
+    "current_uses":"int",
+    "reach":"int",
+    "spell_text":"int",
+    "element":"string",
+    "damage/healing":"formula",
+    "crit":"string",
     "ref:effects":"list<int>"
 }
