@@ -3,17 +3,17 @@
         {
             "id":1,
             "name":"Buen corazón",
-            "effect":"actor.stats.cha + 4"
+            "effect":"actor.cha + 4"
         },
         {
             "id":2,
             "name":"Veterano de guerra",
-            "effect":"actor.stats.ps + 2"
+            "effect":"actor.max_health + 2"
         },
         {
             "id":3,
             "name":"Veterano de guerra",
-            "effect":"actor.stats.pun + 2"
+            "effect":"actor.pun + 2"
         },
     ],
     "custom":[

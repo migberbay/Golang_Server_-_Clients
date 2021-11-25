@@ -8,7 +8,7 @@
     "total_uses":"int",
     "current_uses":"int",
     "reach":"int",
-    "spell_text":"int",
+    "spell_text":"string",
     "element":"string",
     "damage/healing":"formula",
     "crit":"string",

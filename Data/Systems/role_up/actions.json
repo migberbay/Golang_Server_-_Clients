@@ -1,5 +1,5 @@
 {
-    "actions":[
+    "guerrero":[
         {
             "id":1,
             "name":"Buen Corazón",
@@ -132,6 +132,9 @@
             "action":"action",
             "reach":1,
             "effects":[]
-        },
+        }
+    ],
+    "berserker":[
+        
     ]
 }
