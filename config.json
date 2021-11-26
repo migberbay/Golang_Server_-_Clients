@@ -13,25 +13,5 @@
             "username":"pollito",
             "password":""
         }
-    ],
-    "worlds":[
-        {
-            "id":1,
-            "name":"test_world",
-            "owner":1,
-            "players":[1,2],
-            "scenes":[
-                {
-                    "id":1,
-                    "name":"scene_1",
-                    "world":1
-                },
-                {
-                    "id":2,
-                    "name":"scene_2",
-                    "world":2
-                }
-            ]
-        }
     ]
 }

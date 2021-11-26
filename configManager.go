@@ -6,16 +6,17 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 )
 
 var filename = "config.json"
 
 // Data structures from the config file.
 type Config struct {
-	Port   string  `json:"port"`
-	Users  []User  `json:"users"`
-	Worlds []World `json:"worlds"`
-	Scenes []Scene `json:"scenes"`
+	Port   string `json:"port"`
+	Users  []User `json:"users"`
+	Worlds []World
+	Scenes []Scene
 }
 
 type User struct {
@@ -26,16 +27,17 @@ type User struct {
 }
 
 type World struct {
-	ID      int    `json:"id"`
-	Name    string `json:"name"`
-	Owner   int    `json:"owner"`
-	Players []int  `json:"players"`
+	ID      int
+	Name    string
+	Owner   int
+	Players []int
 }
 
 type Scene struct {
-	ID    int    `json:"id"`
-	Name  string `json:"name"`
-	world int    `json:"world"`
+	ID       int
+	Name     string
+	world    int
+	filepath string
 }
 
 // Writes file
@@ -67,5 +69,25 @@ func LoadConfig() Config {
 	var config Config
 	json.Unmarshal(data, &config)
 
+	fmt.Printf("%+v\n", config)
+	WalkFolders()
+	os.Exit(0)
+
 	return config
+}
+
+func WalkFolders() {
+	visit := func(path string, info os.FileInfo, err error) error {
+		if info.IsDir() {
+			fmt.Println("dir:  ", path)
+		} else {
+			fmt.Println("file: ", path)
+		}
+		return nil
+	}
+
+	err := filepath.Walk("./", visit)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
