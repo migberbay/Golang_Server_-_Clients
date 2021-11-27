@@ -184,7 +184,8 @@ func main() {
 	config = LoadConfig()
 	fmt.Println("Users: ", config.Users)
 	fmt.Println("Worlds: ", config.Worlds)
-	fmt.Println("Scenes: ", config.Scenes)
+
+	// os.Exit(0)
 
 	PORT := ":" + config.Port
 
@@ -247,11 +248,13 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 
 	case "04": //Client asing for world to be loaded.
 		world_to_load_id, _ := strconv.Atoi(info)
+		var worldScenes []Scene
 		for _, w := range config.Worlds {
 			if w.ID == world_to_load_id {
 				activeWorld = w
 				msg := activeWorld.Name + " has been activated."
 				logger_message(conn, msg)
+				worldScenes = activeWorld.Scenes
 				break
 			}
 		}
@@ -260,11 +263,9 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 		toSend := string(json_world)
 
 		sceneString := ""
-		for _, s := range config.Scenes {
-			if s.world == activeWorld.ID {
-				to_add, _ := json.Marshal(s)
-				sceneString += string(to_add)
-			}
+		for _, s := range worldScenes {
+			to_add, _ := json.Marshal(s)
+			sceneString += string(to_add)
 		}
 		toSend += sceneString
 

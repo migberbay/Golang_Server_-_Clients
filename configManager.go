@@ -7,7 +7,13 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"reflect"
+	"strings"
+
+	"github.com/Jeffail/gabs"
 )
+
+//https://www.golangprograms.com/dynamic-json-parser-without-struct-in-golang.html --> gabs reference
 
 var filename = "config.json"
 
@@ -16,7 +22,6 @@ type Config struct {
 	Port   string `json:"port"`
 	Users  []User `json:"users"`
 	Worlds []World
-	Scenes []Scene
 }
 
 type User struct {
@@ -28,16 +33,16 @@ type User struct {
 
 type World struct {
 	ID      int
+	System  string
 	Name    string
 	Owner   int
 	Players []int
+	Scenes  []Scene
 }
 
 type Scene struct {
-	ID       int
 	Name     string
-	world    int
-	filepath string
+	Filepath string
 }
 
 // Writes file
@@ -68,26 +73,65 @@ func LoadConfig() Config {
 
 	var config Config
 	json.Unmarshal(data, &config)
+	config.Worlds = GetWorlds()
 
 	fmt.Printf("%+v\n", config)
-	WalkFolders()
-	os.Exit(0)
 
 	return config
 }
 
-func WalkFolders() {
-	visit := func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() {
-			fmt.Println("dir:  ", path)
-		} else {
-			fmt.Println("file: ", path)
+func GabsContainerToArray(elements []*gabs.Container, t reflect.Type) {
+
+}
+
+func GetWorlds() []World {
+	worlds := make([]World, 0)
+	wc := 1
+	err := filepath.Walk("./Worlds", func(path string, info os.FileInfo, err error) error {
+		path_parts := strings.Split(path, "\\")
+		// last := path_parts[len(path_parts)]
+
+		if info.IsDir() && info.Name() != "Worlds" && len(path_parts) <= 2 { //accesing the info.json files in world folder.
+			data, _ := os.ReadFile(path + "/info.json") // You can now access the data like this info["username"]
+
+			world_info, err := gabs.ParseJSON(data)
+			if err != nil {
+				panic(err)
+			}
+
+			// array iteration
+			a, _ := world_info.S("players").Children()
+			players := make([]int, 0)
+			for _, player_id := range a {
+				players = append(players, int(player_id.Data().(float64)))
+			}
+			// scenes := make([]Scene, 0)
+			err = filepath.Walk(path+"/scenes", func(path_ string, info_ os.FileInfo, err error) error {
+				if !info_.IsDir() {
+					fmt.Println("exploring the pathfile: " + path_)
+				}
+				return nil
+			})
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			w := World{
+				ID:      wc,
+				System:  world_info.S("system").Data().(string),
+				Name:    info.Name(),
+				Owner:   int(world_info.S("owner").Data().(float64)),
+				Players: players,
+			}
+
+			worlds = append(worlds, w)
+			wc++
 		}
 		return nil
-	}
-
-	err := filepath.Walk("./", visit)
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	return worlds
 }
