@@ -185,8 +185,6 @@ func main() {
 	fmt.Println("Users: ", config.Users)
 	fmt.Println("Worlds: ", config.Worlds)
 
-	// os.Exit(0)
-
 	PORT := ":" + config.Port
 
 	// Open the port in the config file via UPnP
@@ -237,24 +235,24 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 		user_id, _ := strconv.Atoi(info)
 		msg := "Sending world info for user with id: " + info
 		logger_message(conn, msg)
-		toSend := ""
+		toSend := "{\"worlds\":["
 		for _, w := range config.Worlds {
 			if w.Owner == user_id {
 				json_world, _ := json.Marshal(w)
 				toSend += string(json_world)
+				toSend += ","
 			}
 		}
+		toSend += "]}"
 		conn.Write([]byte("003:" + toSend))
 
-	case "04": //Client asing for world to be loaded.
-		world_to_load_id, _ := strconv.Atoi(info)
-		var worldScenes []Scene
+	case "04": //Client asing for world to be loaded & updated
+		w_id, _ := strconv.Atoi(info)
 		for _, w := range config.Worlds {
-			if w.ID == world_to_load_id {
+			if w.ID == w_id {
 				activeWorld = w
 				msg := activeWorld.Name + " has been activated."
 				logger_message(conn, msg)
-				worldScenes = activeWorld.Scenes
 				break
 			}
 		}
@@ -262,15 +260,10 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 		json_world, _ := json.Marshal(activeWorld)
 		toSend := string(json_world)
 
-		sceneString := ""
-		for _, s := range worldScenes {
-			to_add, _ := json.Marshal(s)
-			sceneString += string(to_add)
-		}
-		toSend += sceneString
-
 		msg := "004:" + toSend
 		conn.Write([]byte(msg))
+
+	case "05": //Client sending files in Data folder to be updated.
 
 	default:
 		m := "Subcode not handled message was: 0" + subcode + ":" + info

@@ -1,4 +1,5 @@
 {
+    "id":1,
     "linked_items_instances":[
         {
             "id":1,
@@ -9,7 +10,7 @@
     "actors":[
         {
             "id":1,
-            "postion":[0,0,0],
+            "position":[0,0,0],
             "rotation":[0,0,0]
         }
     ]

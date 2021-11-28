@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 
 	"github.com/Jeffail/gabs"
@@ -41,6 +40,7 @@ type World struct {
 }
 
 type Scene struct {
+	ID       int
 	Name     string
 	Filepath string
 }
@@ -80,10 +80,6 @@ func LoadConfig() Config {
 	return config
 }
 
-func GabsContainerToArray(elements []*gabs.Container, t reflect.Type) {
-
-}
-
 func GetWorlds() []World {
 	worlds := make([]World, 0)
 	wc := 1
@@ -105,10 +101,20 @@ func GetWorlds() []World {
 			for _, player_id := range a {
 				players = append(players, int(player_id.Data().(float64)))
 			}
-			// scenes := make([]Scene, 0)
+
+			scenes := make([]Scene, 0)
+
 			err = filepath.Walk(path+"/scenes", func(path_ string, info_ os.FileInfo, err error) error {
 				if !info_.IsDir() {
-					fmt.Println("exploring the pathfile: " + path_)
+					scene_data, _ := os.ReadFile(path_) // You can now access the data like this info["username"]
+					scene_info, _ := gabs.ParseJSON(scene_data)
+
+					s := Scene{
+						ID:       int(scene_info.S("id").Data().(float64)),
+						Name:     info_.Name(),
+						Filepath: path_,
+					}
+					scenes = append(scenes, s)
 				}
 				return nil
 			})
@@ -122,6 +128,7 @@ func GetWorlds() []World {
 				Name:    info.Name(),
 				Owner:   int(world_info.S("owner").Data().(float64)),
 				Players: players,
+				Scenes:  scenes,
 			}
 
 			worlds = append(worlds, w)
