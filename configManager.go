@@ -83,7 +83,7 @@ func LoadConfig() Config {
 func GetWorlds() []World {
 	worlds := make([]World, 0)
 	wc := 1
-	err := filepath.Walk("./Worlds", func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk("./TTData/Worlds", func(path string, info os.FileInfo, err error) error {
 		path_parts := strings.Split(path, "\\")
 		// last := path_parts[len(path_parts)]
 
