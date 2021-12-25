@@ -228,7 +228,8 @@ func main() {
 	}
 }
 
-// SUBCODE HANDLERS (0)
+// -----------SUBCODE HANDLERS--------------
+// CONNECTION SUBCODES
 func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 	switch subcode {
 	case "03": // Client asking for worlds belonging to user id
@@ -246,7 +247,7 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 		toSend += "]}"
 		conn.Write([]byte("003:" + toSend))
 
-	case "04": //Client asing for world to be loaded & updated
+	case "04": //Client asking for world to be loaded & updated
 		w_id, _ := strconv.Atoi(info)
 		for _, w := range config.Worlds {
 			if w.ID == w_id {
@@ -263,8 +264,8 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 		msg := "004:" + toSend
 		conn.Write([]byte(msg))
 
-	case "05": //Client sending files in Data folder to be updated.
-
+	case "05": //Client sending file information for file syncing.
+		CompareAndUpdateClientFiles(info)
 	default:
 		m := "Subcode not handled message was: 0" + subcode + ":" + info
 		logger_message(conn, m)
