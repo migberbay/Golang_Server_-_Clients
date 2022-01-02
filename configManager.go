@@ -6,8 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path/filepath"
-	"strings"
 
 	"github.com/Jeffail/gabs"
 )
@@ -82,62 +80,68 @@ func LoadConfig() Config {
 
 func GetWorlds() []World {
 	worlds := make([]World, 0)
-	wc := 1
-	err := filepath.Walk("./TTData/Worlds", func(path string, info os.FileInfo, err error) error {
-		path_parts := strings.Split(path, "\\")
-		// last := path_parts[len(path_parts)]
+	wids := 1
 
-		if info.IsDir() && info.Name() != "Worlds" && len(path_parts) <= 2 { //accesing the info.json files in world folder.
-			data, _ := os.ReadFile(path + "/info.json") // You can now access the data like this info["username"]
+	AllWorldsInfo, _ := ioutil.ReadDir("./TTData/Worlds")
 
-			world_info, err := gabs.ParseJSON(data)
-			if err != nil {
-				panic(err)
-			}
+	for _, f := range AllWorldsInfo {
+		if f.IsDir() {
+			worldinfo, _ := ioutil.ReadDir("./TTData/Worlds/" + f.Name())
+			for _, w := range worldinfo {
+				//SINGLE WORLD INFO RECOPILATION
+				id := wids
+				name := f.Name()
+				system := ""
+				owner := 0
+				players := make([]int, 0)
+				scenes := make([]Scene, 0)
 
-			// array iteration
-			a, _ := world_info.S("players").Children()
-			players := make([]int, 0)
-			for _, player_id := range a {
-				players = append(players, int(player_id.Data().(float64)))
-			}
+				if w.IsDir() && w.Name() == "scenes" { // Scene directory
+					scenespath := "./TTData/Worlds/" + f.Name() + "/scenes"
+					scenesinfo, _ := ioutil.ReadDir(scenespath)
+					for _, s := range scenesinfo {
+						scene_data, _ := os.ReadFile(scenespath + "/" + s.Name()) // You can now access the data like this info["username"]
+						scene_info, _ := gabs.ParseJSON(scene_data)
 
-			scenes := make([]Scene, 0)
-
-			err = filepath.Walk(path+"/scenes", func(path_ string, info_ os.FileInfo, err error) error {
-				if !info_.IsDir() {
-					scene_data, _ := os.ReadFile(path_) // You can now access the data like this info["username"]
-					scene_info, _ := gabs.ParseJSON(scene_data)
-
-					s := Scene{
-						ID:       int(scene_info.S("id").Data().(float64)),
-						Name:     info_.Name(),
-						Filepath: path_,
+						s := Scene{
+							ID:       int(scene_info.S("id").Data().(float64)),
+							Name:     s.Name(),
+							Filepath: scenespath + "/" + s.Name(),
+						}
+						scenes = append(scenes, s)
 					}
-					scenes = append(scenes, s)
 				}
-				return nil
-			})
-			if err != nil {
-				log.Fatal(err)
-			}
 
-			w := World{
-				ID:      wc,
-				System:  world_info.S("system").Data().(string),
-				Name:    info.Name(),
-				Owner:   int(world_info.S("owner").Data().(float64)),
-				Players: players,
-				Scenes:  scenes,
-			}
+				if !w.IsDir() && w.Name() == "info.json" { // info file
+					data, _ := os.ReadFile("./TTData/Worlds/" + f.Name() + "/info.json") // You can now access the data like this info["username"]
 
-			worlds = append(worlds, w)
-			wc++
+					world_info, err := gabs.ParseJSON(data)
+					errCheck(err)
+
+					// array iteration
+					a, _ := world_info.S("players").Children()
+					for _, player_id := range a {
+						players = append(players, int(player_id.Data().(float64)))
+					}
+					system = world_info.S("system").Data().(string)
+					owner = int(world_info.S("owner").Data().(float64))
+
+				}
+
+				w := World{
+					ID:      id,     //wc,
+					System:  system, //world_info.S("system").Data().(string),
+					Name:    name,   //info.Name(),
+					Owner:   owner,  //int(world_info.S("owner").Data().(float64)),
+					Players: players,
+					Scenes:  scenes,
+				}
+
+				worlds = append(worlds, w)
+
+				wids++
+			}
 		}
-		return nil
-	})
-	if err != nil {
-		log.Fatal(err)
 	}
 
 	return worlds

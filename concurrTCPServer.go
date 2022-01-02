@@ -2,7 +2,9 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net"
 	"strconv"
@@ -26,6 +28,7 @@ var connections []user_conn // current connections
 var external_ip string
 var config Config
 var activeWorld World
+var messageCount int = 0
 
 // Main Function for handling connections, meant to be paralelized for 1 thread per connection.
 func handleConnection(conn user_conn) {
@@ -36,7 +39,8 @@ func handleConnection(conn user_conn) {
 
 	if err != nil || !authed {
 		fmt.Println(err)
-		current_connection.Write([]byte("401:Fatal error during authentication."))
+		// this is done outside the send MessageToClient cuz threading ordering.
+		SendMessageToClient(current_connection, []byte("401:Fatal error during authentication."))
 		return
 	}
 
@@ -45,27 +49,40 @@ func handleConnection(conn user_conn) {
 	// MANAGEMENT.
 	for {
 		//read new petition from client
-		netData, err := bufio.NewReader(current_connection).ReadString('\n')
-		if err != nil {
-			fmt.Println(err)
-			return
+		reader := bufio.NewReader(current_connection)
+
+		result := ""
+
+		var endCond bool = false
+
+		for !endCond {
+			line, isPrefix, err := reader.ReadLine()
+			result += string(line)
+
+			if err != nil || !isPrefix {
+				fmt.Println(err)
+				endCond = true
+			}
 		}
 
 		// message handling.
-		msg := strings.TrimSpace(string(netData))
+		msg := strings.TrimSpace(string(result))
 		logger_message(current_connection, "Message recieved from client => "+msg)
-		stopConnFlag := messageHandler(msg, current_connection)
+		stopConnFlag := messageHandler(msg, conn)
 
 		if stopConnFlag {
-			current_connection.Write([]byte("002:Logout processed")) // Send logout back to client.
+
+			SendMessageToClient(current_connection, []byte("002:Logout processed"))
 			break
 		}
 	}
 }
 
-func messageHandler(msg string, conn net.Conn) bool {
+func messageHandler(msg string, connection user_conn) bool {
 	info := strings.SplitN(msg, ":", 2)
 	main_code := info[0]
+
+	conn := connection.connection
 
 	if info[0] == "Logout" { // special logout case
 		logout_user_id, _ := strconv.Atoi(info[1])
@@ -77,7 +94,8 @@ func messageHandler(msg string, conn net.Conn) bool {
 				return true
 			}
 		}
-		conn.Write([]byte("400: Error loggin out user..."))
+
+		SendMessageToClient(conn, []byte("400: Error loggin out user..."))
 		logger_message(conn, "Could not logout requested user...")
 		return false
 	}
@@ -90,7 +108,7 @@ func messageHandler(msg string, conn net.Conn) bool {
 	// 400 -> error code.
 	switch main_code[0] {
 	case '0':
-		ConnectionSubcodeHandler(main_code[1:], info[1], conn)
+		ConnectionSubcodeHandler(main_code[1:], info[1], connection)
 	case '1':
 
 		break
@@ -124,7 +142,8 @@ func AuthenticationHandler(conn user_conn) (bool, error) {
 		netData, err := bufio.NewReader(current_connection).ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
-			current_connection.Write([]byte("400: Server reading error.\n"))
+
+			SendMessageToClient(current_connection, []byte("400: Server reading error."))
 			cont = false
 		}
 
@@ -136,7 +155,8 @@ func AuthenticationHandler(conn user_conn) (bool, error) {
 		logger_message(current_connection, msg)
 
 		if log_in_attempt[0] != "Login" {
-			current_connection.Write([]byte("400: Invalid login attempt.\n"))
+
+			SendMessageToClient(current_connection, []byte("400: Invalid login attempt"))
 			cont = false
 		}
 
@@ -148,7 +168,8 @@ func AuthenticationHandler(conn user_conn) (bool, error) {
 			for _, e := range config.Users {
 				if e.Username == usr {
 					if e.Password == pass { // peferably add some type of cyper to this.
-						current_connection.Write([]byte(string("001:accepted;" + strconv.Itoa(e.ID) + "," + e.Type + "," + e.Username)))
+
+						SendMessageToClient(current_connection, []byte("001:accepted;"+strconv.Itoa(e.ID)+","+e.Type+","+e.Username))
 						authed = true
 
 						logger_message(current_connection, "Authentication accepted, current connections are:")
@@ -170,12 +191,105 @@ func AuthenticationHandler(conn user_conn) (bool, error) {
 			}
 
 			if !authed {
-				current_connection.Write([]byte("001:rejected"))
+
+				SendMessageToClient(current_connection, []byte("001:rejected"))
 				fmt.Println("rejected login attempt")
 			}
 		}
 	}
 	return authed, nil
+}
+
+//the client expects a 1024 byte message maximum ,and its not a good idea to send
+//bigger packets anyways so we divide possible packets into smaller ones before sending them
+func SendMessageToClient(c net.Conn, msg []byte) {
+	messageCount++
+	res := DivideArrayAndAddIDs(msg)
+	res = AddPaddingToMessage(res)
+
+	for _, p := range res {
+		fmt.Printf("sending message with length: %v , contents: %v \n", len(p), string(p))
+		c.Write(p)
+	}
+}
+
+// o split byte[] into chunks of < 16384 bytes and add an ID number followed by t if its the last chunk
+func DivideArrayAndAddIDs(msg []byte) [][]byte {
+	strid := strconv.Itoa(messageCount)
+	res := make([][]byte, 0, 16384)
+	parts := (len(msg) / 16000) + 1
+
+	for p := 0; p < parts; p++ {
+		i := p * 16000
+		toadd := strconv.Itoa(p) + ":" + strid
+		if p == parts-1 {
+			toadd += "t;"
+			res = append(res, []byte(toadd+string(msg[i:])))
+		} else {
+			toadd += ";"
+			res = append(res, []byte(toadd+string(msg[i:i+16000])))
+		}
+	}
+
+	return res
+}
+
+func AddPaddingToMessage(toSend [][]byte) [][]byte {
+	var err error
+	for i, p := range toSend {
+		toSend[i], err = PadByteArray(p, 16384)
+		errCheck(err)
+	}
+	return toSend
+}
+
+// pkcs7Pad right-pads the given byte slice with 1 to n bytes, where
+// n is the block size. The size of the result is x times n, where x
+// is at least 1.
+func PadByteArray(b []byte, blocksize int) ([]byte, error) {
+	// ErrInvalidBlockSize indicates hash blocksize <= 0.
+	ErrInvalidBlockSize := errors.New("invalid blocksize")
+	// ErrInvalidPKCS7Data indicates bad input
+	ErrInvalidData := errors.New("invalid data (empty, null, full or over)")
+
+	if blocksize <= 0 {
+		return nil, ErrInvalidBlockSize
+	}
+	if len(b) == 0 || len(b) >= blocksize {
+		return nil, ErrInvalidData
+	}
+
+	// padding bytes to add initially
+	toPad := blocksize - len(b)
+	initial := iterativeDigitsCount(toPad)
+	// we aremove from the padding ammount the number of bytes we are appending in front:
+	summed := iterativeDigitsCount(toPad - initial - 1)
+	// when we add the padding info we change the padding needed if we go to a smaller ammount.
+	toPad -= summed + 1
+	// padding infostring
+	ab := strconv.Itoa(toPad) + ":"
+
+	aux := make([][]byte, 0)
+	aux = append(aux, []byte(ab))
+	aux = append(aux, b)
+	b = bytes.Join(aux, make([]byte, 0))
+
+	// toPad = toPad - len(ab)
+
+	pb := make([]byte, blocksize)
+	copy(pb, b)
+	copy(pb[len(b):], bytes.Repeat([]byte{byte(' ')}, toPad))
+	return pb, nil
+}
+
+//Count the number of digits of an element
+func iterativeDigitsCount(number int) int {
+	count := 0
+	for number != 0 {
+		number /= 10
+		count += 1
+	}
+	return count
 }
 
 // ENTRY FUNCTION.
@@ -230,7 +344,8 @@ func main() {
 
 // -----------SUBCODE HANDLERS--------------
 // CONNECTION SUBCODES
-func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
+func ConnectionSubcodeHandler(subcode string, info string, connection user_conn) {
+	conn := connection.connection
 	switch subcode {
 	case "03": // Client asking for worlds belonging to user id
 		user_id, _ := strconv.Atoi(info)
@@ -245,7 +360,8 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 			}
 		}
 		toSend += "]}"
-		conn.Write([]byte("003:" + toSend))
+
+		SendMessageToClient(conn, []byte("003:"+toSend))
 
 	case "04": //Client asking for world to be loaded & updated
 		w_id, _ := strconv.Atoi(info)
@@ -262,10 +378,12 @@ func ConnectionSubcodeHandler(subcode string, info string, conn net.Conn) {
 		toSend := string(json_world)
 
 		msg := "004:" + toSend
-		conn.Write([]byte(msg))
+
+		SendMessageToClient(conn, []byte(msg))
 
 	case "05": //Client sending file information for file syncing.
-		CompareAndUpdateClientFiles(info)
+		CompareAndUpdateClientFiles(connection, info, false)
+
 	default:
 		m := "Subcode not handled message was: 0" + subcode + ":" + info
 		logger_message(conn, m)
@@ -303,12 +421,12 @@ func forwardConfigPort() error {
 	}
 
 	// discover external IP
-	ip, err := d.ExternalIP()
+	external_ip, err = d.ExternalIP()
 	if err != nil {
 		fmt.Println("Error fetching external IP address; ", err)
 		return err
 	}
-	fmt.Println("Your external IP is:", ip)
+	fmt.Println("Your external IP is:", external_ip)
 
 	port, err := strconv.Atoi(config.Port)
 	if err != nil {
@@ -334,6 +452,7 @@ func displayAvaliableConnections() {
 	}
 }
 
+//TODO: fix this.
 // Runs on defer, meaning the program has no current connections in the listener, currently not working.
 func onClose(listener net.Listener) {
 	listener.Close()

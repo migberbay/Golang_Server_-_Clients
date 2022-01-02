@@ -1,0 +1,12 @@
+{
+    "systems":
+    {
+        "name":"role_up",
+        "actor_class":"actor",
+        "action_class":"action",
+        "pages_class":"pages",
+        "support_classes":["item","effect"],
+        "definition_trail":"_definition",
+        "knowledge_trail":"s"
+    }
+}

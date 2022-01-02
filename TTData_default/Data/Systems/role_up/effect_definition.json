@@ -1,0 +1,6 @@
+{
+    "id":"int",
+    "active":"bool",
+    "name":"string",
+    "effect":"string"
+}
