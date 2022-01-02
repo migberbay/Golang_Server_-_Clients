@@ -1,0 +1,140 @@
+{
+    "guerrero":[
+        {
+            "id":1,
+            "name":"Buen Corazón",
+            "description":"Aumenta +4 su CAR.",
+            "type":"passive",
+            "duration":"always",
+            "effects":[1]
+        },
+        {
+            "id":2,
+            "name":"Fuerza Bruta",
+            "description":"Tiene ventaja en las tiradas de FZA. Además, permite cargar con mucho más peso",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":3,
+            "name":"Veterano de guerra",
+            "description":"Aumenta +2 sus PS máximos. Además, sus heridas cicatrizan con mayor facilidad, por lo que tras 1 hora de haber sufrido daño, regenerará PS hasta la mitad de sus PS máximos.",
+            "type":"passive",
+            "duration":"always",
+            "effects":[2]
+        },
+        {
+            "id":4,
+            "name":"Nacido para el combate",
+            "description":"Puede hacer dos tiradas en los duelos de Iniciativa y elegir una",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":5,
+            "name":"Nacido para el combate",
+            "description":"Puede hacer dos tiradas en los duelos de Iniciativa y elegir una",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":6,
+            "name":"Maestro armero",
+            "description":"Aumenta +1 el daño con cualquier tipo de arma.",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":7,
+            "name":"Armas arrojadizas",
+            "description":"Aumenta +2 su PUN y +1 el daño al atacar con armas arrojadizas.",
+            "type":"passive",
+            "duration":"always",
+            "effects":[3]
+        },
+        {
+            "id":8,
+            "name":"Valentía",
+            "description":"Siempre tiene ventaja en sus ataques cuando lucha él solo contra más de un enemigo CaC (sin aliados implicados en la melé).",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":9,
+            "name":"Valentía",
+            "description":"Siempre tiene ventaja en sus ataques cuando lucha él solo contra más de un enemigo CaC (sin aliados implicados en la melé).",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":10,
+            "name":"Centinela",
+            "description":"Si un enemigo a distancia de ataque CaC se aleja de él, podrá atacarle CaC inmediatamente como lo haría en una situación normal.",
+            "type":"passive",
+            "duration":"always",
+            "action":"reaction",
+            "effects":[]
+        },
+        {
+            "id":11,
+            "name":"Esgrima",
+            "description":"Si un enemigo a distancia de ataque CaC se aleja de él, podrá atacarle CaC inmediatamente como lo haría en una situación normal.",
+            "type":"passive",
+            "duration":"always",
+            "action":"reaction",
+            "total_uses":3,
+            "effects":[]
+        },
+        {
+            "id":12,
+            "name":"Arremetida",
+            "description":"Añade una acción de ataque a la acción de Sprint, aunque el movimiento terminará con dicho ataque.",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":13,
+            "name":"Ariete",
+            "description":"Si se acerca a un objetivo que esté a 4m o más de distancia y le impacta con un ataque CaC, tras calcular el daño del ataque podrá intentar derribarlo ganándole un duelo FZA-FZA.",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":14,
+            "name":"Ataque de barrido",
+            "description":"Permite atacar CaC a dos objetivos dentro de su alcance y que se encuentren adyacentes entre sí.",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":15,
+            "name":"Segunda piel",
+            "description":"Ignora los penalizadores por usar armaduras pesadas. Aunque, seguirán haciendo ruido al moverse.",
+            "type":"passive",
+            "duration":"always",
+            "effects":[]
+        },
+        {
+            "id":16,
+            "name":"Primeros auxilios",
+            "description":"Si un enemigo a distancia de ataque CaC se aleja de él, podrá atacarle CaC inmediatamente como lo haría en una situación normal.",
+            "type":"passive",
+            "duration":"always",
+            "action":"action",
+            "reach":1,
+            "effects":[]
+        }
+    ],
+    "berserker":[
+        
+    ]
+}

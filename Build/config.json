@@ -1,0 +1,17 @@
+{
+    "port":"30069",
+    "users":[
+        {
+            "id":1,
+            "type":"master",
+            "username":"admin",
+            "password":""
+        },
+        {
+            "id":2,
+            "type":"user",
+            "username":"pollito",
+            "password":""
+        }
+    ]
+}

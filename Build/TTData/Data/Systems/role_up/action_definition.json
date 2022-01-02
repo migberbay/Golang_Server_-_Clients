@@ -1,0 +1,16 @@
+{
+    "id":"int",
+    "name":"string",
+    "description":"string",
+    "type":"string",
+    "duration":"string",
+    "action":"string",
+    "total_uses":"int",
+    "current_uses":"int",
+    "reach":"int",
+    "spell_text":"string",
+    "element":"string",
+    "damage/healing":"formula",
+    "crit":"string",
+    "ref:effects":"list<int>"
+}

@@ -1,0 +1,31 @@
+{
+    "actor_models":[
+        {
+            "id":1,
+            "name":"asset_1",
+            "path":"models/actors/asset_1"
+        },
+        {
+            "id":2,
+            "name":"asset_2",
+            "path":"models/actors/asset_2"
+        }
+    ],
+    "synced_objects":[
+        {
+            "id":1,
+            "name":"asset_1",
+            "path":"models/basic/asset_1"
+        },
+        {
+            "id":2,
+            "name":"asset_2",
+            "path":"models/basic/asset_2"
+        }
+    ],
+    "terrains":[
+        {
+            
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "effects":[
+        {
+            "id":1,
+            "name":"Buen corazón",
+            "effect":"actor.cha + 4"
+        },
+        {
+            "id":2,
+            "name":"Veterano de guerra",
+            "effect":"actor.max_health + 2"
+        },
+        {
+            "id":3,
+            "name":"Veterano de guerra",
+            "effect":"actor.pun + 2"
+        },
+    ],
+    "custom":[
+        
+    ]
+}

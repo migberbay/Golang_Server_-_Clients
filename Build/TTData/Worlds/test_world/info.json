@@ -1,0 +1,11 @@
+{
+    "system":"role_up",
+    "owner":1,
+    "players":[2],
+    "assets_files_used":[
+        "files/models/actors/asset_1/placeholder.fbx",
+        "files/models/actors/asset_2/placeholder.fbx",
+        "files/models/basic/asset_1/placeholder.fbx",
+        "files/models/basic/asset_2/placeholder.fbx"
+    ]
+}
