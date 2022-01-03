@@ -52,7 +52,6 @@ func handleConnection(conn user_conn) {
 		reader := bufio.NewReader(current_connection)
 
 		result := ""
-
 		var endCond bool = false
 
 		for !endCond {
@@ -71,7 +70,6 @@ func handleConnection(conn user_conn) {
 		stopConnFlag := messageHandler(msg, conn)
 
 		if stopConnFlag {
-
 			SendMessageToClient(current_connection, []byte("002:Logout processed"))
 			break
 		}
@@ -208,7 +206,7 @@ func SendMessageToClient(c net.Conn, msg []byte) {
 	res = AddPaddingToMessage(res)
 
 	for _, p := range res {
-		fmt.Printf("sending message with length: %v , contents: %v \n", len(p), string(p))
+		// fmt.Printf("sending message with length: %v , contents: %v \n", len(p), string(p))
 		c.Write(p)
 	}
 }
@@ -232,64 +230,6 @@ func DivideArrayAndAddIDs(msg []byte) [][]byte {
 	}
 
 	return res
-}
-
-func AddPaddingToMessage(toSend [][]byte) [][]byte {
-	var err error
-	for i, p := range toSend {
-		toSend[i], err = PadByteArray(p, 16384)
-		errCheck(err)
-	}
-	return toSend
-}
-
-// pkcs7Pad right-pads the given byte slice with 1 to n bytes, where
-// n is the block size. The size of the result is x times n, where x
-// is at least 1.
-func PadByteArray(b []byte, blocksize int) ([]byte, error) {
-	// ErrInvalidBlockSize indicates hash blocksize <= 0.
-	ErrInvalidBlockSize := errors.New("invalid blocksize")
-	// ErrInvalidPKCS7Data indicates bad input
-	ErrInvalidData := errors.New("invalid data (empty, null, full or over)")
-
-	if blocksize <= 0 {
-		return nil, ErrInvalidBlockSize
-	}
-	if len(b) == 0 || len(b) >= blocksize {
-		return nil, ErrInvalidData
-	}
-
-	// padding bytes to add initially
-	toPad := blocksize - len(b)
-	initial := iterativeDigitsCount(toPad)
-	// we aremove from the padding ammount the number of bytes we are appending in front:
-	summed := iterativeDigitsCount(toPad - initial - 1)
-	// when we add the padding info we change the padding needed if we go to a smaller ammount.
-	toPad -= summed + 1
-	// padding infostring
-	ab := strconv.Itoa(toPad) + ":"
-
-	aux := make([][]byte, 0)
-	aux = append(aux, []byte(ab))
-	aux = append(aux, b)
-	b = bytes.Join(aux, make([]byte, 0))
-
-	// toPad = toPad - len(ab)
-
-	pb := make([]byte, blocksize)
-	copy(pb, b)
-	copy(pb[len(b):], bytes.Repeat([]byte{byte(' ')}, toPad))
-	return pb, nil
-}
-
-//Count the number of digits of an element
-func iterativeDigitsCount(number int) int {
-	count := 0
-	for number != 0 {
-		number /= 10
-		count += 1
-	}
-	return count
 }
 
 // ENTRY FUNCTION.
@@ -344,6 +284,8 @@ func main() {
 
 // -----------SUBCODE HANDLERS--------------
 // CONNECTION SUBCODES
+
+// This function handles
 func ConnectionSubcodeHandler(subcode string, info string, connection user_conn) {
 	conn := connection.connection
 	switch subcode {
@@ -388,6 +330,64 @@ func ConnectionSubcodeHandler(subcode string, info string, connection user_conn)
 		m := "Subcode not handled message was: 0" + subcode + ":" + info
 		logger_message(conn, m)
 	}
+}
+
+// MESSAGE OPERATIONS
+
+func AddPaddingToMessage(toSend [][]byte) [][]byte {
+	var err error
+	for i, p := range toSend {
+		toSend[i], err = PadByteArray(p, 16384)
+		errCheck(err)
+	}
+	return toSend
+}
+
+// right-pads the given byte slice and appends padding information to it with [padded bytes]: format.
+func PadByteArray(b []byte, blocksize int) ([]byte, error) {
+	// ErrInvalidBlockSize indicates hash blocksize <= 0.
+	ErrInvalidBlockSize := errors.New("invalid blocksize")
+	// ErrInvalidPKCS7Data indicates bad input
+	ErrInvalidData := errors.New("invalid data (empty, null, full or over)")
+
+	if blocksize <= 0 {
+		return nil, ErrInvalidBlockSize
+	}
+	if len(b) == 0 || len(b) >= blocksize {
+		return nil, ErrInvalidData
+	}
+
+	// padding bytes to add initially
+	toPad := blocksize - len(b)
+	initial := iterativeDigitsCount(toPad)
+	// we aremove from the padding ammount the number of bytes we are appending in front:
+	summed := iterativeDigitsCount(toPad - initial - 1)
+	// when we add the padding info we change the padding needed if we go to a smaller ammount.
+	toPad -= summed + 1
+	// padding infostring
+	ab := strconv.Itoa(toPad) + ":"
+
+	aux := make([][]byte, 0)
+	aux = append(aux, []byte(ab))
+	aux = append(aux, b)
+	b = bytes.Join(aux, make([]byte, 0))
+
+	// toPad = toPad - len(ab)
+
+	pb := make([]byte, blocksize)
+	copy(pb, b)
+	copy(pb[len(b):], bytes.Repeat([]byte{byte(' ')}, toPad))
+	return pb, nil
+}
+
+//Count the number of digits of an element
+func iterativeDigitsCount(number int) int {
+	count := 0
+	for number != 0 {
+		number /= 10
+		count += 1
+	}
+	return count
 }
 
 // AUXILIARY FUNCTIONS
